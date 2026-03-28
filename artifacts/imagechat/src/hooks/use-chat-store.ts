@@ -149,7 +149,8 @@ export const useChatStore = create<ChatStore>()(
         currentConversationId: state.currentConversationId,
       }),
       onRehydrateStorage: () => (_state, error) => {
-        if (!error) useChatStore.setState({ isHydrated: true });
+        if (error) console.error('Failed to rehydrate chat store:', error);
+        useChatStore.setState({ isHydrated: true });
       },
     }
   )

@@ -3,7 +3,7 @@ import { Sidebar } from '@/components/layout/sidebar';
 import { ChatInput, type PendingAttachment } from '@/components/chat/chat-input';
 import { MessageBubble } from '@/components/chat/message-bubble';
 import { useChatStore } from '@/hooks/use-chat-store';
-import { useSendMessage, useGenerateImage, type ChatMessageAspectRatio, type ChatMessage } from '@workspace/api-client-react';
+import { useSendMessage, useGenerateImage, type ChatMessageAspectRatio, type ChatMessage, ApiError } from '@workspace/api-client-react';
 import { Sparkles, PanelLeftOpen, Image as ImageIcon, MessageSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -235,11 +235,12 @@ export function ChatPage() {
 }
 
 function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) {
-    const apiErr = error as Error & { data?: { error?: string; details?: string } };
-    if (apiErr.data?.details) return apiErr.data.details;
-    if (apiErr.data?.error) return apiErr.data.error;
+  if (error instanceof ApiError) {
+    const data = error.data as { error?: string; details?: string } | null;
+    if (data?.details) return data.details;
+    if (data?.error) return data.error;
     return error.message;
   }
+  if (error instanceof Error) return error.message;
   return 'An unexpected error occurred';
 }
