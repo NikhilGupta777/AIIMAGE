@@ -202,9 +202,11 @@ export function ChatPage() {
 
                 {isPending && (
                   <div className="flex w-full justify-start mb-5">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center mr-3 mt-0.5 shrink-0">
-                      <Sparkles className="w-3.5 h-3.5 text-white" />
-                    </div>
+                    <img
+                      src="/images/ai-avatar.png"
+                      alt="Gemini Studio"
+                      className="w-7 h-7 rounded-full object-cover mr-3 mt-0.5 shrink-0 shadow-sm"
+                    />
                     <div className="flex items-center gap-1 pt-2">
                       {[0, 150, 300].map((delay) => (
                         <div

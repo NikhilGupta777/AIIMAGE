@@ -40,9 +40,11 @@ export function MessageBubble({ message }: MessageBubbleProps) {
     <div className={cn('flex w-full group', isUser ? 'justify-end' : 'justify-start', 'mb-5')}>
       {!isUser && (
         <div className="flex-shrink-0 mr-3 mt-0.5">
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-white" />
-          </div>
+          <img
+            src="/images/ai-avatar.png"
+            alt="Gemini Studio"
+            className="w-7 h-7 rounded-full object-cover shadow-sm"
+          />
         </div>
       )}
 
