@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, Image as ImageIcon, Sparkles } from 'lucide-react';
+import { Plus, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { formatTime, cn } from '@/lib/utils';
@@ -38,9 +38,11 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       )}>
         <div className="px-3 pt-3 pb-2 flex items-center gap-2.5 border-b border-sidebar-border/50">
           <div className="flex items-center gap-2.5 flex-1 min-w-0">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-md shrink-0">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
+            <img
+              src="/images/ai-avatar.png"
+              alt="Gemini Studio"
+              className="w-8 h-8 rounded-xl object-cover shadow-md shrink-0"
+            />
             <span className="font-semibold text-sm text-sidebar-foreground truncate">Gemini Studio</span>
           </div>
           <Button
