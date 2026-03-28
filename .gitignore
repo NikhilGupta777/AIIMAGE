@@ -51,3 +51,5 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+temp_auto_push.bat
+temp_interactive_push.bat

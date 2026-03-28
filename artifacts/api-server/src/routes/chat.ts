@@ -149,7 +149,7 @@ router.post("/chat/generate-image", async (req: Request, res: Response) => {
     parts.push({ text: enhancedPrompt });
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash-preview-image-generation",
+      model: "gemini-3-pro-image-preview",
       contents: [{ role: "user", parts }],
       config: { responseModalities: [Modality.IMAGE, Modality.TEXT] },
     });
