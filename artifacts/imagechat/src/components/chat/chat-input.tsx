@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import {
-  Send, Sparkles, Loader2, Paperclip, X, ChevronDown, Image as ImageIcon
+  Send, Sparkles, Loader2, Paperclip, X, Image as ImageIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -27,11 +27,8 @@ export function ChatInput({ onSendMessage, onGenerateImage, isPending }: ChatInp
   const [mode, setMode] = React.useState<'chat' | 'image'>('chat');
   const [aspectRatio, setAspectRatio] = React.useState<ChatMessageAspectRatio>('16:9');
   const [attachments, setAttachments] = React.useState<PendingAttachment[]>([]);
-  const [toolsOpen, setToolsOpen] = React.useState(false);
-
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const toolsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -40,16 +37,6 @@ export function ChatInput({ onSendMessage, onGenerateImage, isPending }: ChatInp
       textareaRef.current.style.height = `${Math.min(h, 160)}px`;
     }
   }, [input]);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (toolsRef.current && !toolsRef.current.contains(e.target as Node)) {
-        setToolsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -91,13 +78,11 @@ export function ChatInput({ onSendMessage, onGenerateImage, isPending }: ChatInp
 
   const switchToImage = () => {
     setMode('image');
-    setToolsOpen(false);
     setTimeout(() => textareaRef.current?.focus(), 50);
   };
 
   const switchToChat = () => {
     setMode('chat');
-    setToolsOpen(false);
   };
 
   return (
@@ -239,57 +224,22 @@ export function ChatInput({ onSendMessage, onGenerateImage, isPending }: ChatInp
             disabled={isPending}
           />
 
-          {/* Tools dropdown (chat mode only) */}
+          {/* Create image button (chat mode only) */}
           {mode === 'chat' && (
-            <div className="relative mb-0.5" ref={toolsRef}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setToolsOpen(!toolsOpen)}
-                    className={cn(
-                      'h-9 px-2.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary/60 gap-1',
-                      toolsOpen && 'bg-secondary/60 text-foreground'
-                    )}
-                    disabled={isPending}
-                  >
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span className="text-xs font-medium hidden sm:inline">Tools</span>
-                    <ChevronDown className={cn('w-3 h-3 transition-transform', toolsOpen && 'rotate-180')} />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Tools</TooltipContent>
-              </Tooltip>
-
-              <AnimatePresence>
-                {toolsOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 6, scale: 0.97 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 6, scale: 0.97 }}
-                    transition={{ duration: 0.12 }}
-                    className="absolute bottom-full right-0 mb-2 w-44 bg-card border border-border rounded-xl shadow-xl overflow-hidden z-50"
-                  >
-                    <div className="p-1">
-                      <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50 px-2 py-1.5">Tools</div>
-                      <button
-                        onClick={switchToImage}
-                        className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-secondary/60 transition-colors text-left group"
-                      >
-                        <div className="w-7 h-7 rounded-lg bg-purple-500/10 flex items-center justify-center shrink-0">
-                          <ImageIcon className="w-3.5 h-3.5 text-purple-400" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-medium text-foreground">Create image</div>
-                          <div className="text-[10px] text-muted-foreground">Gemini 3.1 Flash</div>
-                        </div>
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={switchToImage}
+                  className="h-9 w-9 shrink-0 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary/60 mb-0.5"
+                  disabled={isPending}
+                >
+                  <ImageIcon className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Create image</TooltipContent>
+            </Tooltip>
           )}
 
           {/* Send button */}
