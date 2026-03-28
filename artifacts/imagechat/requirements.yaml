@@ -1,0 +1,14 @@
+packages:
+  "framer-motion": "Smooth layout animations for chat bubbles and UI transitions"
+  "react-markdown": "Rendering markdown content from the AI response"
+  "remark-gfm": "GitHub Flavored Markdown plugin for tables and lists"
+  "zustand": "Simple, robust state management for local chat history"
+  "date-fns": "Formatting chat timestamps"
+  "uuid": "Generating unique conversation IDs"
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility for merging tailwind classes without style conflicts"
+
+images:
+  - path: "artifacts/imagechat/public/images/ai-avatar.png"
+    description: "A minimal, sleek, abstract geometric logo representing artificial intelligence. Very dark background, glowing subtle white and silver accents, professional and premium feel."
+    aspect_ratio: "1:1"

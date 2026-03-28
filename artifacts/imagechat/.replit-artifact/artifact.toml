@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Gemini Image Chat"
+version = "1.0.0"
+id = "artifacts/imagechat"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21094
+
+[services.development]
+run = "pnpm --filter @workspace/imagechat run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/imagechat", "run", "build" ]
+publicDir = "artifacts/imagechat/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21094"
+BASE_PATH = "/"

@@ -1,0 +1,204 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: Gemini Image Chat API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: chat
+    description: Chat and image generation
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /chat/message:
+    post:
+      operationId: sendMessage
+      tags: [chat]
+      summary: Send a chat message
+      description: Send a message and get a text response from Gemini 2.5 Flash, supports file attachments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatRequest"
+      responses:
+        "200":
+          description: Chat response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatResponse"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /chat/generate-image:
+    post:
+      operationId: generateImage
+      tags: [chat]
+      summary: Generate an image
+      description: Generate an image using Gemini 3.1 Flash Image model
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImageGenerationRequest"
+      responses:
+        "200":
+          description: Generated image
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageGenerationResponse"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    FileAttachment:
+      type: object
+      properties:
+        data:
+          type: string
+          description: Base64 encoded file data
+        mimeType:
+          type: string
+        name:
+          type: string
+      required:
+        - data
+        - mimeType
+        - name
+    ChatMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+        type:
+          type: string
+          enum: [text, image]
+        imageUrl:
+          type: string
+        aspectRatio:
+          type: string
+          enum: ["16:9", "9:16"]
+        timestamp:
+          type: string
+        attachmentUrls:
+          type: array
+          items:
+            type: string
+          description: Data URLs of attached files shown in the chat thread
+      required:
+        - role
+        - content
+        - type
+    ChatRequest:
+      type: object
+      properties:
+        message:
+          type: string
+        history:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChatMessage"
+        attachments:
+          type: array
+          items:
+            $ref: "#/components/schemas/FileAttachment"
+          description: Files attached to this message
+      required:
+        - message
+    ChatResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        role:
+          type: string
+      required:
+        - message
+        - role
+    ImageGenerationRequest:
+      type: object
+      properties:
+        prompt:
+          type: string
+        aspectRatio:
+          type: string
+          enum: ["16:9", "9:16"]
+        conversationContext:
+          type: string
+        referenceImage:
+          type: object
+          description: Optional reference image to edit or use as a base
+          properties:
+            data:
+              type: string
+              description: Base64 encoded image data
+            mimeType:
+              type: string
+          required:
+            - data
+            - mimeType
+      required:
+        - prompt
+        - aspectRatio
+    ImageGenerationResponse:
+      type: object
+      properties:
+        imageData:
+          type: string
+          description: Base64 encoded image data
+        mimeType:
+          type: string
+        prompt:
+          type: string
+        aspectRatio:
+          type: string
+      required:
+        - imageData
+        - mimeType
+        - prompt
+        - aspectRatio
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        details:
+          type: string
+      required:
+        - error
