@@ -149,11 +149,9 @@ export function ChatPage() {
           <div className="max-w-3xl mx-auto flex flex-col">
             {messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center min-h-[55vh] text-center px-4">
-                <img
-                  src={`${import.meta.env.BASE_URL}images/ai-avatar.png`}
-                  alt="Gemini Studio"
-                  className="w-20 h-20 mb-5 rounded-2xl object-cover shadow-lg shadow-purple-500/20"
-                />
+                <div className="w-20 h-20 mb-5 rounded-2xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+                  <Sparkles className="w-9 h-9 text-white" />
+                </div>
                 <h1 className="text-3xl font-bold tracking-tight mb-2">Where should we start?</h1>
                 <p className="text-muted-foreground max-w-sm mb-10 text-sm">
                   Chat with Gemini 2.5 Flash or generate images with Gemini 3.1 Flash Image. Attach files, images, and more.
