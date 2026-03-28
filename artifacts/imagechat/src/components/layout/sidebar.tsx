@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, Image as ImageIcon } from 'lucide-react';
+import { Plus, MessageSquare, Trash2, PanelLeftClose, PanelLeftOpen, Image as ImageIcon, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useChatStore } from '@/hooks/use-chat-store';
 import { formatTime, cn } from '@/lib/utils';
@@ -36,25 +36,34 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
         "fixed md:static inset-y-0 left-0 z-50 flex flex-col bg-sidebar border-r border-sidebar-border transition-all duration-300 ease-in-out",
         isOpen ? "w-[268px] translate-x-0" : "-translate-x-full md:translate-x-0 md:w-0 overflow-hidden border-none"
       )}>
-        <div className="p-3 flex items-center gap-2 border-b border-sidebar-border/50">
-          <Button
-            onClick={handleNewChat}
-            className="flex-1 justify-start rounded-xl bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent/80 border border-sidebar-border/60 h-10 shadow-sm"
-          >
-            <Plus className="w-4 h-4 mr-2 shrink-0" />
-            <span className="font-medium text-sm">New Chat</span>
-          </Button>
+        <div className="px-3 pt-3 pb-2 flex items-center gap-2.5 border-b border-sidebar-border/50">
+          <div className="flex items-center gap-2.5 flex-1 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-md shrink-0">
+              <Sparkles className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-semibold text-sm text-sidebar-foreground truncate">Gemini Studio</span>
+          </div>
           <Button
             variant="ghost"
             size="icon"
             onClick={onToggle}
-            className="md:hidden shrink-0 rounded-xl text-sidebar-foreground hover:bg-sidebar-accent h-10 w-10"
+            className="shrink-0 rounded-xl text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent h-8 w-8"
           >
             <PanelLeftClose className="w-4 h-4" />
           </Button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-2 py-3 space-y-0.5">
+        <div className="p-3 pt-2">
+          <Button
+            onClick={handleNewChat}
+            className="w-full justify-start rounded-xl bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent/80 border border-sidebar-border/60 h-9 shadow-sm"
+          >
+            <Plus className="w-4 h-4 mr-2 shrink-0" />
+            <span className="font-medium text-sm">New Chat</span>
+          </Button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-2 pb-3 space-y-0.5">
           {conversations.length === 0 ? (
             <div className="text-xs text-muted-foreground px-3 py-8 text-center">
               No conversations yet
