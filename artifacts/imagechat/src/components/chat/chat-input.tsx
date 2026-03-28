@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import {
-  Send, Sparkles, Loader2, Paperclip, X, ChevronDown, Image as ImageIcon, MessageSquare
+  Send, Sparkles, Loader2, Paperclip, X, ChevronDown, Image as ImageIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -283,18 +283,6 @@ export function ChatInput({ onSendMessage, onGenerateImage, isPending }: ChatInp
                         <div>
                           <div className="text-sm font-medium text-foreground">Create image</div>
                           <div className="text-[10px] text-muted-foreground">Gemini 3.1 Flash</div>
-                        </div>
-                      </button>
-                      <button
-                        onClick={switchToChat}
-                        className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-secondary/60 transition-colors text-left"
-                      >
-                        <div className="w-7 h-7 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0">
-                          <MessageSquare className="w-3.5 h-3.5 text-blue-400" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-medium text-foreground">Text chat</div>
-                          <div className="text-[10px] text-muted-foreground">Gemini 2.5 Flash</div>
                         </div>
                       </button>
                     </div>
