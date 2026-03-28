@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 
 export function ChatPage() {
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
-  const { conversations, currentConversationId, getOrCreateEmptyConversation, addMessage, setCurrentConversation } = useChatStore();
+  const { isHydrated, conversations, currentConversationId, getOrCreateEmptyConversation, addMessage, setCurrentConversation } = useChatStore();
   const { toast } = useToast();
 
   const sendMessageMutation = useSendMessage();
@@ -19,12 +19,13 @@ export function ChatPage() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isHydrated) return;
     if (conversations.length === 0 && !currentConversationId) {
       getOrCreateEmptyConversation();
     } else if (conversations.length > 0 && !currentConversationId) {
       setCurrentConversation(conversations[0].id);
     }
-  }, []);
+  }, [isHydrated]);
 
   const currentConv = conversations.find(c => c.id === currentConversationId);
   const messages = currentConv?.messages || [];
@@ -79,7 +80,7 @@ export function ChatPage() {
     } catch (error) {
       toast({
         title: 'Failed to send message',
-        description: error instanceof Error ? error.message : 'An unexpected error occurred',
+        description: getErrorMessage(error),
         variant: 'destructive',
       });
     }
@@ -120,7 +121,7 @@ export function ChatPage() {
     } catch (error) {
       toast({
         title: 'Failed to generate image',
-        description: error instanceof Error ? error.message : 'An unexpected error occurred',
+        description: getErrorMessage(error),
         variant: 'destructive',
       });
     }
@@ -231,4 +232,14 @@ export function ChatPage() {
       </main>
     </div>
   );
+}
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    const apiErr = error as Error & { data?: { error?: string; details?: string } };
+    if (apiErr.data?.details) return apiErr.data.details;
+    if (apiErr.data?.error) return apiErr.data.error;
+    return error.message;
+  }
+  return 'An unexpected error occurred';
 }

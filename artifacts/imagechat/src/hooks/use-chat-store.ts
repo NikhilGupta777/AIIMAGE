@@ -12,6 +12,7 @@ export interface Conversation {
 }
 
 interface ChatStore {
+  isHydrated: boolean;
   conversations: Conversation[];
   currentConversationId: string | null;
 
@@ -40,6 +41,7 @@ const idbStorage = {
 export const useChatStore = create<ChatStore>()(
   persist(
     (set, get) => ({
+      isHydrated: false,
       conversations: [],
       currentConversationId: null,
 
@@ -146,6 +148,9 @@ export const useChatStore = create<ChatStore>()(
         conversations: state.conversations,
         currentConversationId: state.currentConversationId,
       }),
+      onRehydrateStorage: () => (_state, error) => {
+        if (!error) useChatStore.setState({ isHydrated: true });
+      },
     }
   )
 );

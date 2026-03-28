@@ -59,8 +59,11 @@ Every package extends `tsconfig.base.json` which sets `composite: true`. The roo
 
 ## Root Scripts
 
-- `pnpm run build` — runs `typecheck` first, then recursively runs `build` in all packages that define it
-- `pnpm run typecheck` — runs `tsc --build --emitDeclarationOnly` using project references
+Root `package.json` exists at the workspace root and provides:
+- `pnpm run build` — runs `typecheck` first, then builds the api-server bundle
+- `pnpm run typecheck` — builds lib `.d.ts` declarations then typechecks api-server and imagechat
+
+TypeScript is installed as a root devDependency and invoked via `node node_modules/.bin/tsc`.
 
 ## Packages
 

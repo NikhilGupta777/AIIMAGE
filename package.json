@@ -1,0 +1,12 @@
+{
+  "name": "@workspace/root",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "typecheck": "node node_modules/.bin/tsc --build --emitDeclarationOnly && node node_modules/.bin/tsc -p artifacts/api-server/tsconfig.json --noEmit && node node_modules/.bin/tsc -p artifacts/imagechat/tsconfig.json --noEmit",
+    "build": "pnpm run typecheck && pnpm --filter @workspace/api-server run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

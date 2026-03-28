@@ -50,7 +50,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
         {/* Attached images (user uploads) */}
         {isUser && message.attachmentUrls && message.attachmentUrls.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-2 justify-end">
-            {message.attachmentUrls.map((url, i) => (
+            {message.attachmentUrls.map((url: string, i: number) => (
               <div key={i} className="relative rounded-xl overflow-hidden border border-border/50 shadow-sm">
                 <img
                   src={url}
